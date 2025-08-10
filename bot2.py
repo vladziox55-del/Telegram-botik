@@ -90,8 +90,8 @@ texts = {
     "pay_method_ua": "Оберіть спосіб оплати:",
     "pay_on_delivery_ru": "Оплата при получении",
     "pay_on_delivery_ua": "Оплата при отриманні",
-    "pay_prepay_ru": "Оплата сразу в боте",
-    "pay_prepay_ua": "Оплата відразу в боті",
+    "pay_prepay_ru": "Оплата Картой",
+    "pay_prepay_ua": "Оплата Карткою",
     "pay_on_delivery_info_ru": "📞 С вами свяжется в ближайшее время наш менеджер для подтверждения заказа.",
     "pay_on_delivery_info_ua": "📞 З вами найближчим часом зв'яжеться наш менеджер для підтвердження замовлення.",
     "prepay_info_ru": (
@@ -197,27 +197,61 @@ def menu_handler(message):
         show_vaporesso_pods(message)
     elif text == "Voopoo":
         bot.send_message(user_id, "Раздел Voopoo пока в разработке." if lang=="ru" else "Розділ Voopoo поки в розробці.")
-    elif text == t("order_button", lang):
-        if not user_carts[user_id]:
-            bot.send_message(user_id, texts["cart_empty_ru"] if lang == "ru" else texts["cart_empty_ua"])
-            return
-        show_payment_options(message)
-    elif text == t("pay_on_delivery_ru") or text == t("pay_on_delivery_ua"):
-        bot.send_message(user_id, texts["pay_on_delivery_info_ru"] if lang == "ru" else texts["pay_on_delivery_info_ua"])
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        markup.add(types.KeyboardButton(t("back_btn_ru") if lang == "ru" else t("back_btn_ua")))
-        bot.send_message(user_id, t("back_btn_ru") if lang=="ru" else t("back_btn_ua"), reply_markup=markup)
-        user_carts[user_id] = []
-    elif text == t("pay_prepay_ru") or text == t("pay_prepay_ua"):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        markup.add(types.KeyboardButton(t("pay_done_ru") if lang == "ru" else t("pay_done_ua")))
-        markup.add(types.KeyboardButton(t("back_btn_ru") if lang == "ru" else t("back_btn_ua")))
-        bot.send_message(user_id, texts["prepay_info_ru"] if lang == "ru" else texts["prepay_info_ua"], parse_mode="Markdown", reply_markup=markup)
-    elif text == t("pay_done_ru") or text == t("pay_done_ua"):
-        try:
-            user_mention = f"@{message.from_user.username or message.from_user.first_name}"
-            bot.send_message(ADMIN_USERNAME, f"✅ Пользователь {user_mention} подтвердил оплату заказа.")
-            bot.send_message(user_id, "Спасибо! Мы получили подтверждение оплаты. Ожидайте обработки заказа." if lang == "ru" else "Дякуємо! Ми отримали підтвердження оплати. Очікуйте обробки замовлення.")
+
+elif text == t("order_button", lang):
+    if not user_carts[user_id]:
+        bot.send_message(user_id, texts["cart_empty_ru"] if lang == "ru" else texts["cart_empty_ua"])
+        return
+    show_payment_options(message)
+
+elif text == t("pay_on_delivery_ru") or text == t("pay_on_delivery_ua"):
+    bot.send_message(user_id, texts["pay_on_delivery_info_ru"] if lang == "ru" else texts["pay_on_delivery_info_ua"])
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.add(types.KeyboardButton(t("back_btn_ru") if lang == "ru" else t("back_btn_ua")))
+    bot.send_message(user_id, t("back_btn_ru") if lang=="ru" else t("back_btn_ua"), reply_markup=markup)
+    user_carts[user_id] = []
+
+elif text == t("pay_prepay_ru") or text == t("pay_prepay_ua"):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.add(types.KeyboardButton(t("pay_done_ru") if lang == "ru" else t("pay_done_ua")))
+    markup.add(types.KeyboardButton(t("back_btn_ru") if lang == "ru" else t("back_btn_ua")))
+    bot.send_message(user_id, texts["prepay_info_ru"] if lang == "ru" else texts["prepay_info_ua"], parse_mode="Markdown", reply_markup=markup)
+
+elif text == "Оплата криптовалютой" or text == "Оплата криптовалютою":
+    crypto_wallet = "UQDjclQadIIq-DUoTNY53oHfcp9WVi5mRVnUVxVUnQ-vznEc (ton)"
+    msg = (
+        "💰 Оплата криптовалютой\n\n"
+        f"Отправьте оплату на следующий адрес:\n`{crypto_wallet}`\n\n"
+        "После оплаты нажмите кнопку ниже, чтобы подтвердить оплату."
+        if lang == "ru"
+        else
+        "💰 Оплата криптовалютою\n\n"
+        f"Надішліть оплату на наступну адресу:\n`{crypto_wallet}`\n\n"
+        "Після оплати натисніть кнопку нижче, щоб підтвердити оплату."
+    )
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.add(types.KeyboardButton(t("pay_done_ru") if lang == "ru" else t("pay_done_ua")))
+    markup.add(types.KeyboardButton(t("back_btn_ru") if lang == "ru" else t("back_btn_ua")))
+    bot.send_message(user_id, msg, parse_mode="Markdown", reply_markup=markup)
+
+elif text == t("pay_done_ru") or text == t("pay_done_ua"):
+    try:
+        user_mention = f"@{message.from_user.username or message.from_user.first_name}"
+        bot.send_message(ADMIN_USERNAME, f"✅ Пользователь {user_mention} подтвердил оплату заказа.")
+        bot.send_message(user_id, "Спасибо! Мы получили подтверждение оплаты. Ожидайте обработки заказа." if lang == "ru" else "Дякуємо! Ми отримали підтвердження оплати. Очікуйте обробки замовлення.")
+    except Exception:
+        pass
+
+
+def show_payment_options(message):
+    user_id = message.from_user.id
+    lang = user_language.get(user_id, "ru")
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.add(types.KeyboardButton(t("pay_on_delivery_ru") if lang == "ru" else t("pay_on_delivery_ua")))
+    markup.add(types.KeyboardButton(t("pay_prepay_ru") if lang == "ru" else t("pay_prepay_ua")))
+    markup.add(types.KeyboardButton("Оплата криптовалютой" if lang == "ru" else "Оплата криптовалютою"))
+    markup.add(types.KeyboardButton(t("back_btn_ru") if lang == "ru" else t("back_btn_ua")))
+    bot.send_message(user_id, t("pay_method_ru") if lang == "ru" else t("pay_method_ua"), reply_markup=markup)
         except Exception:
             pass
     elif text == t("clear_cart_ru") or text == t("clear_cart_ua"):
@@ -404,4 +438,4 @@ def add_purchase(user_id, amount):
 # Для запуска
 if __name__ == "__main__":
     print("Бот запущен")
-    bot.infinity_polling()
+    bot.infinity_polling(
