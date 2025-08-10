@@ -351,10 +351,14 @@ def show_vaporesso_pods(message):
     markup = types.InlineKeyboardMarkup(row_width=1)
 
     pods = [
-        ("Pod VAPORESSO Luxe 2", 450),
-        ("Pod VAPORESSO Degree", 480),
-        ("Pod VAPORESSO OSMALL", 350),
-        ("Pod VAPORESSO XROS 3", 390),
+            ("0.4 Ом, 3 ml", "Vaporesso Xros Series 0.4, 3ml"),
+            ("0.4 Ом, 2 ml", "Vaporesso Xros Series 0.4, 2ml"),
+            ("0.6 Ом, 3 ml", "Vaporesso Xros Series 0.6, 3ml"),
+            ("0.6 Ом, 2 ml", "Vaporesso Xros Series 0.6, 2ml"),
+            ("0.8 Ом, 3 ml", "Vaporesso Xros Series 0.8, 3ml"),
+            ("0.8 Ом, 2 ml", "Vaporesso Xros Series 0.8, 2ml"),
+            ("1.0 Ом, 3 ml", "Vaporesso Xros Series 1.0, 3ml"),
+            ("1.0 Ом, 2 ml", "Vaporesso Xros Series 1.0, 2ml"),
     ]
 
     for name, price in pods:
