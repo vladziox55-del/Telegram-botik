@@ -197,7 +197,6 @@ def menu_handler(message):
         show_vaporesso_pods(message)
     elif text == "Voopoo":
         bot.send_message(user_id, "Раздел Voopoo пока в разработке." if lang=="ru" else "Розділ Voopoo поки в розробці.")
-
 elif text == t("order_button", lang):
     if not user_carts[user_id]:
         bot.send_message(user_id, texts["cart_empty_ru"] if lang == "ru" else texts["cart_empty_ua"])
