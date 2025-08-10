@@ -205,7 +205,7 @@ def menu_handler(message):
         return
     show_payment_options(message)
 
-elif text == t("pay_on_delivery_ru") or text == t("pay_on_delivery_ua"):
+if text == t("pay_on_delivery_ru") or text == t("pay_on_delivery_ua"):
     bot.send_message(user_id, texts["pay_on_delivery_info_ru"] if lang == "ru" else texts["pay_on_delivery_info_ua"])
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     markup.add(types.KeyboardButton(t("back_btn_ru") if lang == "ru" else t("back_btn_ua")))
