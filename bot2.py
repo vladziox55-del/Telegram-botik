@@ -184,7 +184,7 @@ def menu_handler(message):
     text = message.text
 
     if text == t("menu_order", lang):
-    show_catalog_menu(message)
+        show_catalog_menu(message)
 
 elif text == t("menu_cart", lang):
     show_cart(message)
