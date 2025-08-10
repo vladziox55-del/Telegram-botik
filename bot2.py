@@ -208,16 +208,18 @@ elif text == "Vaporesso":
     show_vaporesso_pods(message)
 
 elif text == "Voopoo":
-    bot.send_message(
-        user_id,
-        "Раздел Воопоо пока в разработке." if lang == "ru" else "Розділ Воопоо поки в розробці."
-    )
+    if lang == "ru":
+        bot.send_message(user_id, "Раздел Воопоо пока в разработке.")
+    else:
+        bot.send_message(user_id, "Розділ Воопоо поки в розробці.")
+
     if not user_carts[user_id]:
         bot.send_message(
             user_id,
             texts["cart_empty_ru"] if lang == "ru" else texts["cart_empty_ua"]
         )
         return
+
     show_payment_options(message)
 
 elif text == t("pay_on_delivery_ru") or text == t("pay_on_delivery_ua"):
@@ -257,7 +259,7 @@ elif text == "Оплата криптовалютой" or text == "Оплата 
         f"Відправте оплату на наступну адресу:\n`{crypto_wallet}`\n\n"
         "Після оплати натисніть кнопку нижче, щоб підтвердити оплату."
     )
-    bot.send_message(user_id, msg, parse_mode="Markdown", reply_markup=markup)
+    bot.send_message(user_id, msg, parse_mode="Markdown")
 
 elif text == t("pay_done_ru") or text == t("pay_done_ua"):
     try:
